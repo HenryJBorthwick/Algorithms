@@ -1,0 +1,31 @@
+def adjacency_matrix(graph_str):
+    # Split the string into lines and extract the graph properties
+    lines = graph_str.strip().split("\n")
+    directed = lines[0][0] == "D"
+    weighted = lines[0][-1] == "W"
+    n = int(lines[0][2:])
+
+    # Create the initial adjacency matrix as a list of empty lists
+    adj_matrix = [[] for _ in range(n)]
+
+    # Fill the adjacency matrix with edges and weights
+    for line in lines[1:]:
+        i, j, *rest = map(int, line.split())
+        weight = rest[0] if weighted else 1
+
+        # Add the edge and weight to the adjacency matrix
+        adj_matrix[i].append((j, weight))
+        if not directed:
+            adj_matrix[j].append((i, weight))
+
+    # Sort the adjacency lists by vertex number for consistency
+    for i in range(n):
+        adj_matrix[i].sort()
+
+    # Convert the adjacency lists to adjacency matrices
+    adj_matrix = [[None] * n for _ in range(n)] if weighted else [[0] * n for _ in range(n)]
+    for i in range(n):
+        for j, weight in adj_matrix[i]:
+            adj_matrix[i][j] = weight
+
+    return adj_matrix

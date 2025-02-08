@@ -1,0 +1,81 @@
+Code the following BFS based of the following pseudo code:
+1 procedure DFS-Tree(Adj, s)
+2 n ← number of vertices (the length of Adj)
+3 state ← an array of length n filled with Undiscovered
+4 parent ← an array of length n filled with null
+5 state[s] ← Discovered
+6 DFS-Loop(Adj, s, state, parent)
+7 return parent
+1 procedure DFS-Loop(Adj, u, state, parent)
+2 for v in Adj[u]
+3 if state[v] = Undiscovered
+4 state[v] ← Discovered
+5 parent[v] ← u
+6 DFS-Loop(Adj, v, state, parent)
+7 state[u] ← Processed
+
+And pass the following tests:
+#Test
+# an undirected graph
+
+adj_list = [
+    [(1, None), (2, None)],
+    [(0, None), (2, None)],
+    [(0, None), (1, None)]
+]
+
+print(dfs_tree(adj_list, 0))
+print(dfs_tree(adj_list, 1))
+print(dfs_tree(adj_list, 2))
+
+#Output
+[None, 0, 1]
+[1, None, 0]
+[2, 0, None]
+
+#Test
+# a directed graph (note the asymmetrical adjacency list)
+
+adj_list = [
+[(1, None)],
+[]
+]
+
+print(dfs_tree(adj_list, 0))
+print(dfs_tree(adj_list, 1))
+
+#Output
+[None, 0]
+[None, None]
+
+#Test
+# graph from the textbook example
+graph_string = """\
+U 7
+1 2
+1 5
+1 6
+2 3
+2 5
+3 4
+4 5
+"""
+
+print(dfs_tree(adjacency_list(graph_string), 1))
+
+#Output
+[None, None, 1, 2, 3, 4, 1]
+
+#Test
+graph_string = """\
+U 4
+2 3
+2 1
+0 3
+1 0
+"""
+
+print(dfs_tree(adjacency_list(graph_string), 0))
+
+#Output
+[None, 2, 3, 0]

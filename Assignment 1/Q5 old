@@ -1,0 +1,101 @@
+import math
+
+def adjacency_list(graph_str):
+    lines = graph_str.strip().splitlines()
+    graph_type, num_vertices, *is_weighted = lines[0].split()
+    num_vertices = int(num_vertices)
+    adj_list = [[] for _ in range(num_vertices)]
+
+    for line in lines[1:]:
+        parts = line.split()
+        vertex_one = int(parts[0])
+        vertex_two = int(parts[1])
+
+        if 'W' in is_weighted:
+            edge_weight = int(parts[2])
+        else:
+            edge_weight = None
+
+        adj_list[vertex_one].append((vertex_two, edge_weight))
+
+        if graph_type == 'U':
+            adj_list[vertex_two].append((vertex_one, edge_weight))
+
+    return adj_list
+
+def dijkstra(adj_list, s):
+    n = len(adj_list)
+    in_tree = [False] * n
+    distance = [float('inf')] * n
+    parent = [None] * n
+    distance[s] = 0
+
+    while not all(in_tree):
+        u = next_vertex(in_tree, distance)
+        in_tree[u] = True
+
+        for v, weight in adj_list[u]:
+            if not in_tree[v] and distance[u] + weight < distance[v]:
+                distance[v] = distance[u] + weight
+                parent[v] = u
+
+    return parent, distance
+
+def next_vertex(in_tree, distance):
+    min_dist = None
+    min_vertex = None
+
+    for v in range(len(in_tree)):
+        if not in_tree[v] and (min_dist is None or distance[v] < min_dist):
+            min_dist = distance[v]
+            min_vertex = v
+
+    return min_vertex
+
+def min_capacity(city_map, depot_position):
+    # Generate an adjacency list from the given city_map
+    adj_list = adjacency_list(city_map)
+    
+    # Calculate the total number of vertices in the adjacency list
+    n = len(adj_list)
+    
+    # Create a list to store the shortest distances from the depot to each vertex
+    # Initialize all distances to infinity
+    distances = [float('inf')] * n
+    
+    # Calculate the shortest paths and their distances using Dijkstra's algorithm
+    parent, distance = dijkstra(adj_list, depot_position)
+
+    # Update the distances list with the calculated distances from Dijkstra's algorithm
+    for i in range(n):
+        distances[i] = distance[i]
+
+    # Find the maximum distance from the depot to any other vertex
+    max_distance = max([d for d in distances if d != float('inf')])
+    
+    # Calculate the minimum battery capacity required
+    # We multiply the maximum distance by 2 to account for the round trip (to and from the depot)
+    # Then we multiply by (3 / 2) to convert the distance to the equivalent battery capacity
+    # Finally, we multiply by 1.3333 to ensure there's at least 25% charge left in the battery
+    min_capacity = math.ceil((max_distance * 2) * (3 / 2) * 1.3333)
+
+    # Return the minimum battery capacity required
+    return min_capacity
+# TEST:
+city_map = """\
+U 4 W
+0 2 5
+0 3 2
+3 2 2
+"""
+
+print(min_capacity(city_map, 0))
+print(min_capacity(city_map, 1))
+print(min_capacity(city_map, 2))
+print(min_capacity(city_map, 3))
+
+# OUTPUT:
+# 16
+# 0
+# 16
+# 8

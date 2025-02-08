@@ -1,0 +1,7 @@
+graph {
+	Root [label=23]
+	Leaf1 [label=13 shape=box]
+	Leaf2 [label=99 shape=box]
+	Root -- Leaf1
+	Root -- Leaf2
+}

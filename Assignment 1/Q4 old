@@ -1,0 +1,101 @@
+import heapq
+
+def adjacency_list(graph_str):
+    # Split the string into a list of lines
+    lines = graph_str.strip().splitlines()
+
+    # Get the type of the graph (directed or undirected) 
+    graph_type, num_vertices, *is_weighted = lines[0].split()
+
+    # Convert the number of vertices from string to integer
+    num_vertices = int(num_vertices)
+    
+    # Initialize the adjacency list with empty lists
+    adj_list = [[] for _ in range(num_vertices)]
+
+    # Parse the edges and populate the adjacency list
+    for line in lines[1:]:
+        # Split line into two vertices
+        parts = line.split()
+        # Store each vertex
+        vertex_one = int(parts[0])
+        vertex_two = int(parts[1])
+
+        # Check if weighted, have to use in for the * element is a list
+        if 'W' in is_weighted:
+            # Store weight of vertex 
+            edge_weight = int(parts[2])
+        else:
+            # No give no weight
+            edge_weight = None
+
+        # Add edge to adjacency 
+        adj_list[vertex_one].append((vertex_two, edge_weight))
+
+        # Check if undirected to add the other edge connection
+        if graph_type == 'U':
+            adj_list[vertex_two].append((vertex_one, edge_weight))
+
+    return adj_list
+
+def which_segments(city_map):
+    # Create the adjacency list using the provided function
+    adj_list = adjacency_list(city_map)
+    
+    # Initialize the priority queue (min-heap)
+    priority_queue = []
+    
+    # Initialize the visited list with False for all vertices
+    visited = [False] * len(adj_list)
+    
+    # Add the first vertex to the priority queue with weight 0
+    heapq.heappush(priority_queue, (0, 0, -1))
+    
+    # Initialize the result list to store the road segments
+    result = []
+
+    # While there are items in the priority queue
+    while priority_queue:
+        # Pop the lowest-weight item from the priority queue
+        weight, current_vertex, parent_vertex = heapq.heappop(priority_queue)
+
+        # If the current vertex has not been visited
+        if not visited[current_vertex]:
+            # Mark the current vertex as visited
+            visited[current_vertex] = True
+
+            # If the parent vertex exists, add the road segment to the result list
+            if parent_vertex != -1:
+                result.append((min(current_vertex, parent_vertex), max(current_vertex, parent_vertex)))
+
+            # Iterate through the neighbors of the current vertex
+            for neighbor, edge_weight in adj_list[current_vertex]:
+                # If the neighbor hasn't been visited, add it to the priority queue
+                if not visited[neighbor]:
+                    heapq.heappush(priority_queue, (edge_weight, neighbor, current_vertex))
+
+    # Return the result list containing the road segments to clear
+    return result
+
+# TEST:
+# city_map = """\
+# U 3 W
+# 0 1 1
+# 2 1 2
+# 2 0 4
+# """
+
+# print(sorted(which_segments(city_map)))
+
+# OUTPUT:
+# [(0, 1), (1, 2)]
+
+# TEST:
+# city_map = """\
+# U 1 W
+# """
+
+# print(sorted(which_segments(city_map)))
+
+# OUTPUT:
+# []

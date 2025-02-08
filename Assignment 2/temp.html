@@ -1,0 +1,32 @@
+<html><head><style>
+table {font-size: 100%; border-collapse: collapse}
+td, th  {border: 1px solid LightGrey; padding: 2px; }
+td del {background-color: #FFBB00; text-decoration: none;}
+</style></head><body><h1>Show Differences (COSC262 2020)</h1><table>
+<tr><th>Previous</th><th>Current</th></tr>
+<tr><td><pre># ============== DELETEs =====================</pre></td><td><pre># ============== DELETEs =====================</pre></td></tr>
+<tr><td style="background-color:#BBBBFF"><pre># TODO: add docstrings</pre></td><td style="background-color:LightGrey"><pre></pre></td></tr>
+<tr><td><pre>@app.route(&#x27;/queue/&lt;hostname&gt;&#x27;, methods=[&#x27;DELETE&#x27;])</pre></td><td><pre>@app.route(&#x27;/queue/&lt;hostname&gt;&#x27;, methods=[&#x27;DELETE&#x27;])</pre></td></tr>
+<tr><td><pre>def delete(hostname):</pre></td><td><pre>def delete(hostname):</pre></td></tr>
+<tr><td style="background-color:LightGrey"><pre></pre></td><td style="background-color:#ABEBC6"><pre>    &quot;&quot;&quot;Handle delete request from the given host&quot;&quot;&quot;</pre></td></tr>
+<tr><td><pre>    try:</pre></td><td><pre>    try:</pre></td></tr>
+<tr><td><pre>        data = json.loads(request.get_data())</pre></td><td><pre>        data = json.loads(request.get_data())</pre></td></tr>
+<tr><td style="background-color:#FFFF99"><pre>        mac_address = data[&#x27;mac<del>A</del>ddress&#x27;]</pre></td><td style="background-color:#FFFF99"><pre>        mac_address = data[&#x27;mac<del>_</del><del>a</del>ddress&#x27;]</pre></td></tr>
+<tr><td><pre>    except:</pre></td><td><pre>    except:</pre></td></tr>
+<tr><td><pre>        abort(400, &#x27;Missing or invalid user data&#x27;)</pre></td><td><pre>        abort(400, &#x27;Missing or invalid user data&#x27;)</pre></td></tr>
+<tr><td style="background-color:#FFFF99"><pre>    status = queue.dequeue(hostname, mac<del>A</del>ddress)</pre></td><td style="background-color:#FFFF99"><pre>    status = queue.dequeue(hostname, mac<del>_</del><del>a</del>ddress)</pre></td></tr>
+<tr><td><pre>    return (&#x27;&#x27;, status)</pre></td><td><pre>    return (&#x27;&#x27;, status)</pre></td></tr>
+<tr><td><pre></pre></td><td><pre></pre></td></tr>
+<tr><td><pre></pre></td><td><pre></pre></td></tr>
+<tr><td><pre>@app.route(&#x27;/queue&#x27;, methods=[&#x27;DELETE&#x27;])</pre></td><td><pre>@app.route(&#x27;/queue&#x27;, methods=[&#x27;DELETE&#x27;])</pre></td></tr>
+<tr><td style="background-color:LightGrey"><pre></pre></td><td style="background-color:#ABEBC6"><pre>def clear_queue():</pre></td></tr>
+<tr><td style="background-color:#FFFF99"><pre><del>d</del>e<del>f</del> e<del>m</del><del>p</del><del>t</del><del>y</del><del>_</del>queue<del>(</del><del>)</del><del>:</del></pre></td><td style="background-color:#FFFF99"><pre><del> </del><del> </del><del> </del><del> </del><del>&quot;</del><del>&quot;</del><del>&quot;</del><del>C</del><del>l</del>e<del>a</del><del>r</del> <del>t</del><del>h</del>e<del> </del>queue<del>.</del><del> </del><del>V</del><del>a</del><del>l</del><del>i</del><del>d</del><del> </del><del>o</del><del>n</del><del>l</del><del>y</del><del> </del><del>i</del><del>f</del><del> </del><del>c</del><del>o</del><del>m</del><del>i</del><del>n</del><del>g</del><del> </del><del>f</del><del>r</del><del>o</del><del>m</del><del> </del><del>t</del><del>u</del><del>t</del><del>o</del><del>r</del><del> </del><del>m</del><del>a</del><del>c</del><del>h</del><del>i</del><del>n</del><del>e</del><del>&quot;</del><del>&quot;</del><del>&quot;</del></pre></td></tr>
+<tr><td><pre>    if request.remote_addr.upper() != TUTOR_MACHINE.upper():</pre></td><td><pre>    if request.remote_addr.upper() != TUTOR_MACHINE.upper():</pre></td></tr>
+<tr><td style="background-color:#FFFF99"><pre>        abort(403, &quot;<del>N</del><del>o</del>t <del>a</del>ut<del>h</del>ori<del>s</del>e<del>d</del>&quot;)</pre></td><td style="background-color:#FFFF99"><pre>        abort(403, &quot;<del>O</del><del>n</del><del>l</del><del>y</del><del> </del>t<del>h</del><del>e</del> <del>t</del>utor<del> </del><del>m</del><del>a</del><del>c</del><del>h</del>i<del>n</del>e<del> </del><del>c</del><del>a</del><del>n</del><del> </del><del>c</del><del>l</del><del>e</del><del>a</del><del>r</del><del> </del><del>t</del><del>h</del><del>e</del><del> </del><del>q</del><del>u</del><del>e</del><del>u</del><del>e</del>&quot;)</pre></td></tr>
+<tr><td><pre>    else:</pre></td><td><pre>    else:</pre></td></tr>
+<tr><td><pre>        queue.clear_queue()</pre></td><td><pre>        queue.clear_queue()</pre></td></tr>
+<tr><td style="background-color:#FFFF99"><pre>        response = jsonify({&quot;message&quot;: &quot;Queue e<del>m</del><del>p</del><del>t</del><del>i</del>ed&quot;})</pre></td><td style="background-color:#FFFF99"><pre>        response = jsonify({&quot;message&quot;: &quot;Queue <del>c</del><del>l</del>e<del>a</del><del>r</del>ed&quot;})</pre></td></tr>
+<tr><td><pre>        response.status_code = 204</pre></td><td><pre>        response.status_code = 204</pre></td></tr>
+<tr><td><pre>        return response</pre></td><td><pre>        return response</pre></td></tr>
+</table>
+</body></html>

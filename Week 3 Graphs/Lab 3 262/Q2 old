@@ -1,0 +1,113 @@
+def adjacency_list(graph_str):
+    # Split the string into a list of lines
+    lines = graph_str.strip().splitlines()
+
+    # Get the type of the graph (directed or undirected) 
+    graph_type, num_vertices, *rest = lines[0].split()
+
+    #Get the number of vertices
+    num_vertices = int(num_vertices)
+
+    # Initialize the adjacency list with empty lists
+    adj_list = [[] for _ in range(num_vertices)]
+
+    # Determine if the graph is weighted
+    is_weighted = len(rest) > 0 and rest[0] == 'W'
+
+    # Parse the edges and populate the adjacency list
+    for line in lines[1:]:
+        v1, v2, *weight = map(int, line.split())
+        if is_weighted:
+            weight = weight[0]
+        else:
+            weight = None
+        adj_list[v1].append((v2, weight))
+        if graph_type == 'U':
+            adj_list[v2].append((v1, weight))
+
+    return adj_list
+
+# #TEST
+graph_string = """\
+D 3
+0 1
+1 0
+0 2
+"""
+print(adjacency_list(graph_string))
+
+#OUTPUT:
+#[[(1, None), (2, None)], [(0, None)], []]
+
+# #TEST
+# graph_string = """\
+# D 3 W
+# 0 1 7
+# 1 0 -2
+# 0 2 0
+# """
+# print(adjacency_list(graph_string))
+
+#OUTPUT
+#[[(1, 7), (2, 0)], [(0, -2)], []]
+
+# # #TEST
+# from pprint import pprint
+
+# # undirected graph in the textbook example
+# graph_string = """\
+# U 7
+# 1 2
+# 1 5
+# 1 6
+# 2 3
+# 2 5
+# 3 4
+# 4 5
+# """
+
+# pprint(adjacency_list(graph_string))
+
+#OUTPUT:
+#[[],
+# [(2, None), (5, None), (6, None)],
+# [(1, None), (3, None), (5, None)],
+# [(2, None), (4, None)],
+# [(3, None), (5, None)],
+# [(1, None), (2, None), (4, None)],
+# [(1, None)]]
+
+# #TEST
+# from pprint import pprint
+
+# graph_string = """\
+# U 17
+# 1 2
+# 1 15
+# 1 6
+# 12 13
+# 2 15
+# 13 4
+# 4 5
+# """
+
+# pprint(adjacency_list(graph_string))
+
+#OUTPUT:
+#[[],
+# [(2, None), (15, None), (6, None)],
+# [(1, None), (15, None)],
+# [],
+# [(13, None), (5, None)],
+# [(4, None)],
+# [(1, None)],
+# [],
+# [],
+# [],
+# [],
+# [],
+# [(13, None)],
+# [(12, None), (4, None)],
+# [],
+# [(1, None), (2, None)],
+# []]

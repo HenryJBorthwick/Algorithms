@@ -1,0 +1,108 @@
+def adjacency_matrix(graph_str):
+    # Parse the graph string
+    lines = graph_str.strip().splitlines()
+    directed = lines[0][0] == 'D'
+    weighted = len(lines[0]) > 2 and lines[0][2] == 'W'
+    n = int(lines[0].split()[1])
+    edges = [tuple(map(int, line.split())) for line in lines[1:]]
+
+    # Create an empty adjacency matrix
+    matrix = [[None] * n for _ in range(n)]
+
+    # Populate the matrix with the edges of the graph
+    for i, j, *w in edges:
+        i -= 1
+        j -= 1
+        if weighted:
+            w = w[0]
+        else:
+            w = 1
+        matrix[i][j] = w
+        if not directed:
+            matrix[j][i] = w
+
+    return matrix
+
+#Test:
+graph_string = """\
+D 3
+0 1
+1 0
+0 2
+"""
+
+print(adjacency_matrix(graph_string))
+
+#Output:
+#[[0, 1, 1], [1, 0, 0], [0, 0, 0]]
+
+#Test:
+# graph_string = """\
+# D 3 W
+# 0 1 7
+# 1 0 -2
+# 0 2 0
+# """
+# print(adjacency_matrix(graph_string))
+
+#Output:
+#[[None, 7, 0], [-2, None, None], [None, None, None]]
+
+#Test:
+# from pprint import pprint
+
+# graph_string = """\
+# U 7
+# 1 2
+# 1 5
+# 1 6
+# 3 4
+# 0 4
+# 4 5
+# """
+
+# pprint(adjacency_matrix(graph_string))
+
+#Output:
+# [[0, 0, 0, 0, 1, 0, 0],
+#  [0, 0, 1, 0, 0, 1, 1],
+#  [0, 1, 0, 0, 0, 0, 0],
+#  [0, 0, 0, 0, 1, 0, 0],
+#  [1, 0, 0, 1, 0, 1, 0],
+#  [0, 1, 0, 0, 1, 0, 0],
+#  [0, 1, 0, 0, 0, 0, 0]]
+
+#Test:
+# from pprint import pprint
+
+# graph_string = """\
+# U 17
+# 1 2
+# 1 15
+# 1 6
+# 12 13
+# 2 15
+# 13 4
+# 4 5
+# """
+
+# pprint(adjacency_matrix(graph_string))
+
+#Output:
+# [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#  [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+#  [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+#  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#  [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+#  [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#  [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+#  [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+#  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#  [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]

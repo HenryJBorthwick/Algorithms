@@ -1,0 +1,103 @@
+Code the following BFS based of the following pseudo code:
+1 procedure BFS-Tree(Adj, s)
+2 n ← number of vertices (the length of Adj)
+3 state ← an array of length n filled with Undiscovered
+4 parent ← an array of length n filled with null
+5 Q ← an empty queue
+6 state[s] ← Discovered
+7 Enqueue(Q, s)
+8 return BFS-Loop(Adj, Q, state, parent)
+1 procedure BFS-Loop(Adj, Q, state, parent)
+2 while Q is not empty
+3 u ← Dequeue(Q)
+4 for v in Adj[u]
+5 if state[v] = Undiscovered
+6 state[v] ← Discovered
+7 parent[v] ← u
+8 Enqueue(Q, v)
+9 state[u] ← Processed
+10 return parent
+
+And pass the following tests:
+#Test
+# an undirected graph
+
+adj_list = [
+    [(1, None)],
+    [(0, None), (2, None)],
+    [(1, None)]
+]
+
+print(bfs_tree(adj_list, 0))
+print(bfs_tree(adj_list, 1))
+
+#Output
+[None, 0, 1]
+[1, None, 1]
+
+#Test
+# a directed graph (note the asymmetrical adjacency list)
+
+adj_list = [
+[(1, None)],
+[]
+]
+
+print(bfs_tree(adj_list, 0))
+print(bfs_tree(adj_list, 1))
+
+#Output
+[None, 0]
+[None, None]
+
+#Test
+graph_string = """\
+D 2
+0 1
+"""
+
+print(bfs_tree(adjacency_list(graph_string), 0))
+
+#Output
+[None, 0]
+
+#Test
+graph_string = """\
+D 2
+0 1
+1 0
+"""
+
+print(bfs_tree(adjacency_list(graph_string), 1))
+
+#Output
+[1, None]
+
+#Test
+# graph from the textbook example
+graph_string = """\
+U 7
+1 2
+1 5
+1 6
+2 3
+2 5
+3 4
+4 5
+"""
+
+print(bfs_tree(adjacency_list(graph_string), 1))
+
+#Output
+[None, None, 1, 2, 5, 1, 1]
+
+#Test
+graph_string = """\
+D 2 W
+0 1 99
+"""
+
+print(bfs_tree(adjacency_list(graph_string), 0))
+
+#Output
+[None, 0]
